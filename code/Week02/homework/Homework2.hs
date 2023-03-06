@@ -9,9 +9,9 @@ module Homework2 where
 
 import qualified Plutus.V2.Ledger.Api as PlutusV2
 import           PlutusTx             (unstableMakeIsData, compile)
-import           PlutusTx.Prelude     (Bool, BuiltinData)
+import           PlutusTx.Prelude     (Bool (..), BuiltinData)
 import           Prelude              ((/=))
-import           Utilities            (wrap)
+import           Utilities            (wrap, writeValidatorToFile, writeDataToFile)
 
 ---------------------------------------------------------------------------------------------------
 ----------------------------------- ON-CHAIN / VALIDATOR ------------------------------------------
@@ -33,3 +33,8 @@ wrappedVal = wrap mkValidator
 
 validator :: PlutusV2.Validator
 validator = PlutusV2.mkValidatorScript $$(PlutusTx.compile [|| wrappedVal ||])
+
+save = writeValidatorToFile "assets/homework2.plutus" validator
+
+saveValidRedeemer = writeDataToFile "assets/homework2ValidRedeemer.json" (MyRedeemer True False)
+saveInvalidRedeemer = writeDataToFile "assets/homework2InvalidRedeemer.json" (MyRedeemer True True)

@@ -1,3 +1,4 @@
+{-# LANGUAGE NoOverloadedStrings #-}
 {-# LANGUAGE DataKinds           #-}
 {-# LANGUAGE ImportQualifiedPost #-}
 {-# LANGUAGE NoImplicitPrelude   #-}
@@ -8,7 +9,8 @@ module Homework1 where
 import qualified Plutus.V2.Ledger.Api as PlutusV2
 import           PlutusTx             (compile)
 import           PlutusTx.Prelude     (Bool (..), BuiltinData)
-import           Utilities            (wrap)
+import           Utilities            (wrap, writeValidatorToFile)
+
 
 ---------------------------------------------------------------------------------------------------
 ----------------------------------- ON-CHAIN / VALIDATOR ------------------------------------------
