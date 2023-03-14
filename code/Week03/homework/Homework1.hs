@@ -35,12 +35,14 @@ unstableMakeIsData ''VestingDatum
 -- This should validate if either beneficiary1 has signed the transaction and the current slot is before or at the deadline
 -- or if beneficiary2 has signed the transaction and the deadline has passed.
 mkVestingValidator :: VestingDatum -> () -> ScriptContext -> Bool
-mkVestingValidator dat () ctx = signedBy1 && inTime || signedBy2 && not inTime
+mkVestingValidator dat () ctx = signedBy1 && validFor1 || signedBy2 && validFor2
   where
     info = scriptContextTxInfo ctx
     signedBy1 = txSignedBy info $ beneficiary1 dat
     signedBy2 = txSignedBy info $ beneficiary2 dat
-    inTime = to (deadline dat) `contains` txInfoValidRange info
+    validFor1 = to (deadline dat) `contains` txInfoValidRange info
+    validFor2 = deadline dat `before` txInfoValidRange info
+
 
 {-# INLINABLE  mkWrappedVestingValidator #-}
 mkWrappedVestingValidator :: BuiltinData -> BuiltinData -> BuiltinData -> ()
